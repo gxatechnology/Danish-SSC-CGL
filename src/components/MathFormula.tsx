@@ -23,7 +23,7 @@ export const MathFormula: React.FC<MathFormulaProps> = ({ math, block = false, c
   if (block) {
     return (
       <div
-        className={`katex-block my-2 overflow-x-auto py-1 ${className}`}
+        className={`katex-block my-2 overflow-x-auto max-w-full py-1 text-xs sm:text-sm ${className}`}
         dangerouslySetInnerHTML={{ __html: html }}
       />
     );
@@ -31,7 +31,7 @@ export const MathFormula: React.FC<MathFormulaProps> = ({ math, block = false, c
 
   return (
     <span
-      className={`katex-inline ${className}`}
+      className={`katex-inline overflow-x-auto max-w-full inline-block align-middle ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

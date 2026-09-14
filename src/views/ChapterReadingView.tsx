@@ -178,14 +178,15 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
           </div>
 
           {/* Actions toolbar */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <button
               onClick={handleToggleBookmark}
-              className={`p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+              className={`p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer min-h-[38px] ${
                 isBookmarked
                   ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
                   : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100'
               }`}
+              title={isBookmarked ? 'Bookmarked' : 'Bookmark Chapter'}
             >
               {isBookmarked ? <BookmarkCheck className="w-4 h-4 text-emerald-600" /> : <Bookmark className="w-4 h-4" />}
               <span className="hidden sm:inline">{isBookmarked ? 'Bookmarked' : 'Bookmark'}</span>
@@ -193,20 +194,21 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
 
             <button
               onClick={handleToggleCompleted}
-              className={`p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+              className={`p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer min-h-[38px] ${
                 isCompleted
                   ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
                   : 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100'
               }`}
+              title={isCompleted ? 'Completed' : 'Mark Completed'}
             >
               {isCompleted ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <Circle className="w-4 h-4" />}
-              <span>{isCompleted ? 'Completed' : 'Mark Completed'}</span>
+              <span className="text-[11px] sm:text-xs">{isCompleted ? 'Done' : 'Mark Done'}</span>
             </button>
 
             <button
               onClick={handlePrint}
               title="Print or Save as PDF"
-              className="p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 flex items-center gap-1.5 text-xs font-semibold"
+              className="p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 flex items-center gap-1.5 text-xs font-semibold cursor-pointer min-h-[38px]"
             >
               <Printer className="w-4 h-4" />
               <span className="hidden sm:inline">Print</span>
@@ -215,7 +217,7 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
             <button
               onClick={handleShare}
               title="Share chapter"
-              className="p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 flex items-center gap-1.5 text-xs font-semibold"
+              className="p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 flex items-center gap-1.5 text-xs font-semibold cursor-pointer min-h-[38px]"
             >
               <Share2 className="w-4 h-4" />
               <span className="hidden sm:inline">Share</span>
@@ -223,10 +225,10 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
 
             <button
               onClick={handleAskTutor}
-              className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-2.5 sm:px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-colors cursor-pointer min-h-[38px]"
             >
               <Bot className="w-4 h-4" />
-              <span className="hidden md:inline">Ask AI Tutor</span>
+              <span className="text-[11px] sm:text-xs">AI Tutor</span>
             </button>
           </div>
         </div>
@@ -238,20 +240,20 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
         )}
 
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
             {chapter.title}
           </h1>
-          <p className="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl">
+          <p className="mt-2 text-xs sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl">
             {chapter.summary}
           </p>
         </div>
 
         {/* Favorite Trap Callout */}
         {chapter.favouriteTrap && (
-          <div className="p-4 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/70 dark:border-rose-900/40 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/70 dark:border-rose-900/40 flex items-start gap-2.5 sm:gap-3">
+            <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
             <div className="space-y-0.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">
                 SSC Examiner's Favorite Trap
               </span>
               <p className="text-xs sm:text-sm text-rose-900 dark:text-rose-200 font-medium leading-relaxed">
@@ -260,6 +262,37 @@ export const ChapterReadingView: React.FC<ChapterReadingViewProps> = ({
             </div>
           </div>
         )}
+      </div>
+
+      {/* Mobile Sticky Section Navigation Pills & Practice Trigger */}
+      <div className="lg:hidden flex flex-col gap-2.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          {chapter.sections.map((sec, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                setActiveSectionIdx(idx);
+                const el = document.getElementById(`section-${idx}`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                activeSectionIdx === idx
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800'
+              }`}
+            >
+              {sec.sectionNumber ? `${sec.sectionNumber}. ` : ''}{sec.title}
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={onStartQuiz}
+          className="w-full py-3 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center gap-2 shadow-xs hover:opacity-90 transition-opacity cursor-pointer min-h-[44px]"
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>Practice Chapter MCQs ({chapter.mcqsCount})</span>
+        </button>
       </div>
 
       {/* 3-Column Layout: Left (Sections & Quiz CTA), Center (Full Educational Content), Right (Notes & Memory Trick) */}

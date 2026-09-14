@@ -73,29 +73,29 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const progressPercent = Math.round((completedCount / totalChapters) * 100);
 
   return (
-    <div className="w-full max-w-[1360px] mx-auto px-4 md:px-8 py-8 flex flex-col gap-8">
+    <div className="w-full max-w-[1360px] mx-auto px-3 sm:px-4 md:px-8 py-5 sm:py-8 flex flex-col gap-6 sm:gap-8">
       
       {/* Personalized Welcome Banner */}
-      <div className="p-8 md:p-10 rounded-3xl bg-linear-to-br from-[#0f2042] via-[#000922] to-[#002622] text-white shadow-md relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-        <div className="flex flex-col gap-3 max-w-2xl relative z-10">
+      <div className="p-5 sm:p-8 md:p-10 rounded-3xl bg-linear-to-br from-[#0f2042] via-[#000922] to-[#002622] text-white shadow-md relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8">
+        <div className="flex flex-col gap-2.5 sm:gap-3 max-w-2xl relative z-10">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-[#19988c]/20 border border-[#19988c]/40 text-[#89f5e7] font-mono text-[11px] font-bold uppercase tracking-wider">
+            <span className="px-2.5 sm:px-3 py-1 rounded-full bg-[#19988c]/20 border border-[#19988c]/40 text-[#89f5e7] font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
               A Personal Note of Encouragement
             </span>
           </div>
 
-          <h1 className="font-['Plus_Jakarta_Sans'] text-[30px] md:text-[38px] font-extrabold tracking-tight leading-tight">
+          <h1 className="font-['Plus_Jakarta_Sans'] text-[24px] sm:text-[30px] md:text-[38px] font-extrabold tracking-tight leading-tight">
             Assalamu Alaikum, Danish Fatma!
           </h1>
 
-          <p className="font-['Inter'] text-[15px] md:text-[16px] text-[#e0e8f6] leading-relaxed">
+          <p className="font-['Inter'] text-[13px] sm:text-[15px] md:text-[16px] text-[#e0e8f6] leading-relaxed">
             This study hub has been tailored for you with great care by <strong className="text-white">Tauqeer Ashraf</strong>. With dedicated focus on your highest-yield English rules and mathematical shortcuts, you have everything required to excel in the upcoming SSC CGL 2026 Tier-I examination.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
             <button
               onClick={() => onNavigate('study-plan')}
-              className="px-5 py-2.5 rounded-xl bg-[#19988c] hover:bg-[#147a70] text-[#002622] font-bold text-[13px] shadow-sm flex items-center gap-1.5 cursor-pointer transition-all"
+              className="px-4 sm:px-5 py-2.5 rounded-xl bg-[#19988c] hover:bg-[#147a70] text-[#002622] font-bold text-[12px] sm:text-[13px] shadow-sm flex items-center gap-1.5 cursor-pointer transition-all min-h-[42px]"
             >
               <span>View Today’s 14 Sep Target</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -103,7 +103,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
             <button
               onClick={() => onNavigate('ask-tutor')}
-              className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-[13px] flex items-center gap-1.5 cursor-pointer transition-all"
+              className="px-4 sm:px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-[12px] sm:text-[13px] flex items-center gap-1.5 cursor-pointer transition-all min-h-[42px]"
             >
               <span className="material-symbols-outlined text-[16px]">smart_toy</span>
               <span>Ask Your Study Tutor</span>
@@ -112,55 +112,55 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         {/* Live Exam Countdown Box */}
-        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col items-center justify-center shrink-0 w-full md:w-auto relative z-10">
-          <span className="text-[11px] font-mono uppercase tracking-wider text-[#89f5e7] font-bold">
+        <div className="p-4 sm:p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 flex flex-col items-center justify-center shrink-0 w-full md:w-auto relative z-10">
+          <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#89f5e7] font-bold">
             Target Exam Date: 30 Sep 2026
           </span>
-          <div className="flex items-center gap-3 mt-3 font-['JetBrains_Mono']">
+          <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-3 font-['JetBrains_Mono']">
             <div className="flex flex-col items-center">
-              <span className="text-[34px] font-bold leading-none">{timeLeft.days}</span>
-              <span className="text-[10px] uppercase text-[#94a3b8] mt-1">Days</span>
+              <span className="text-[28px] sm:text-[34px] font-bold leading-none">{timeLeft.days}</span>
+              <span className="text-[9px] sm:text-[10px] uppercase text-[#94a3b8] mt-1">Days</span>
             </div>
-            <span className="text-[24px] font-light text-white/40 pb-3">:</span>
+            <span className="text-[20px] sm:text-[24px] font-light text-white/40 pb-2 sm:pb-3">:</span>
             <div className="flex flex-col items-center">
-              <span className="text-[34px] font-bold leading-none">
+              <span className="text-[28px] sm:text-[34px] font-bold leading-none">
                 {timeLeft.hours.toString().padStart(2, '0')}
               </span>
-              <span className="text-[10px] uppercase text-[#94a3b8] mt-1">Hours</span>
+              <span className="text-[9px] sm:text-[10px] uppercase text-[#94a3b8] mt-1">Hours</span>
             </div>
-            <span className="text-[24px] font-light text-white/40 pb-3">:</span>
+            <span className="text-[20px] sm:text-[24px] font-light text-white/40 pb-2 sm:pb-3">:</span>
             <div className="flex flex-col items-center">
-              <span className="text-[34px] font-bold leading-none">
+              <span className="text-[28px] sm:text-[34px] font-bold leading-none">
                 {timeLeft.minutes.toString().padStart(2, '0')}
               </span>
-              <span className="text-[10px] uppercase text-[#94a3b8] mt-1">Mins</span>
+              <span className="text-[9px] sm:text-[10px] uppercase text-[#94a3b8] mt-1">Mins</span>
             </div>
           </div>
-          <span className="text-[11px] text-white/70 mt-3 font-medium">
+          <span className="text-[10px] sm:text-[11px] text-white/70 mt-2 sm:mt-3 font-medium">
             16 Full Preparation Days Remaining
           </span>
         </div>
       </div>
 
       {/* Quick Action Cards Bar */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
         <button
           onClick={onStartMiniTest}
-          className="p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group"
+          className="p-3.5 sm:p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group min-h-[105px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="w-10 h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[22px]">quiz</span>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
+              <span className="material-symbols-outlined text-[18px] sm:text-[22px]">quiz</span>
             </span>
-            <span className="material-symbols-outlined text-[#515f74] group-hover:translate-x-1 transition-transform">
+            <span className="material-symbols-outlined text-[#515f74] group-hover:translate-x-1 transition-transform text-[16px] sm:text-[20px]">
               arrow_forward
             </span>
           </div>
           <div>
-            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[15px] text-[#000922] dark:text-[#f8f9ff]">
+            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[13px] sm:text-[15px] text-[#000922] dark:text-[#f8f9ff]">
               Daily Mini Test
             </h4>
-            <p className="text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
+            <p className="text-[11px] sm:text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
               8-minute rapid calibration
             </p>
           </div>
@@ -168,56 +168,56 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
         <button
           onClick={() => onNavigate('mathematics-formulas')}
-          className="p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group"
+          className="p-3.5 sm:p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group min-h-[105px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="w-10 h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[22px]">calculate</span>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
+              <span className="material-symbols-outlined text-[18px] sm:text-[22px]">calculate</span>
             </span>
-            <span className="material-symbols-outlined text-[#515f74] group-hover:translate-x-1 transition-transform">
+            <span className="material-symbols-outlined text-[#515f74] group-hover:translate-x-1 transition-transform text-[16px] sm:text-[20px]">
               arrow_forward
             </span>
           </div>
           <div>
-            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[15px] text-[#000922] dark:text-[#f8f9ff]">
+            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[13px] sm:text-[15px] text-[#000922] dark:text-[#f8f9ff]">
               Formula Hub
             </h4>
-            <p className="text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
-              KaTeX-rendered cheat sheets
+            <p className="text-[11px] sm:text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
+              KaTeX-rendered sheets
             </p>
           </div>
         </button>
 
         <button
           onClick={() => onNavigate('error-log')}
-          className="p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#ba1a1a] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group"
+          className="p-3.5 sm:p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#ba1a1a] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group min-h-[105px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="w-10 h-10 rounded-xl bg-[#fff1f2] text-[#ba1a1a] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[22px]">warning</span>
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#fff1f2] text-[#ba1a1a] flex items-center justify-center">
+              <span className="material-symbols-outlined text-[18px] sm:text-[22px]">warning</span>
             </span>
             {unresolvedErrorsCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full bg-[#ba1a1a] text-white text-[10px] font-bold font-mono">
+              <span className="px-1.5 py-0.5 rounded-full bg-[#ba1a1a] text-white text-[9px] sm:text-[10px] font-bold font-mono">
                 {unresolvedErrorsCount} Traps
               </span>
             )}
           </div>
           <div>
-            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[15px] text-[#000922] dark:text-[#f8f9ff]">
+            <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[13px] sm:text-[15px] text-[#000922] dark:text-[#f8f9ff]">
               Error Log
             </h4>
-            <p className="text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
-              Eliminate negative marks
+            <p className="text-[11px] sm:text-[12px] text-[#515f74] dark:text-[#94a3b8] mt-0.5">
+              Zero negative marks
             </p>
           </div>
         </button>
 
         <button
           onClick={() => onNavigate('last-day-revision')}
-          className="p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group"
+          className="p-3.5 sm:p-5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] hover:border-[#0f2042] text-left flex flex-col justify-between shadow-xs transition-all cursor-pointer group min-h-[105px]"
         >
-          <div className="flex items-center justify-between mb-2">
-            <span className="w-10 h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#eff4ff] text-[#0f2042] flex items-center justify-center">
               <span className="material-symbols-outlined text-[22px]">bolt</span>
             </span>
             <span className="material-symbols-outlined text-[#515f74] group-hover:translate-x-1 transition-transform">

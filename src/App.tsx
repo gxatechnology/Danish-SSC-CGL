@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { TestResult, StudyTutorContext } from './types';
+import { TestResult, StudyTutorContext, SubjectType } from './types';
 import { MOCK_TESTS } from './content/mockTests';
 import { storageService } from './services/storageService';
 
 // Navigation & Global Components
 import { Navbar } from './components/Navbar';
+import { MobileNav } from './components/MobileNav';
 import { Footer } from './components/Footer';
 import { SearchModal } from './components/SearchModal';
 
 // Views
 import { HomeView } from './views/HomeView';
-import { EnglishView } from './views/EnglishView';
+import { ReasoningView } from './views/ReasoningView';
+import { GeneralAwarenessView } from './views/GeneralAwarenessView';
 import { MathematicsView } from './views/MathematicsView';
+import { EnglishView } from './views/EnglishView';
+import { Tier2View } from './views/Tier2View';
 import { ChapterReadingView } from './views/ChapterReadingView';
 import { GrammarRulesHubView } from './views/GrammarRulesHubView';
 import { VocabularyHubView } from './views/VocabularyHubView';
@@ -24,6 +28,7 @@ import { ErrorLogView } from './views/ErrorLogView';
 import { BookmarksView } from './views/BookmarksView';
 import { StudyPlanView } from './views/StudyPlanView';
 import { LastDayRevisionView } from './views/LastDayRevisionView';
+import { AllSubjectsRevisionView } from './views/AllSubjectsRevisionView';
 import { AskTutorView } from './views/AskTutorView';
 import { SettingsView } from './views/SettingsView';
 import { SyllabusView } from './views/SyllabusView';
@@ -31,7 +36,7 @@ import { SyllabusView } from './views/SyllabusView';
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<string>('dashboard');
   const [activeChapterSlug, setActiveChapterSlug] = useState<string>('subject-verb-agreement');
-  const [activeSubject, setActiveSubject] = useState<'English' | 'Mathematics'>('English');
+  const [activeSubject, setActiveSubject] = useState<SubjectType>('English');
   const [activeMockTestId, setActiveMockTestId] = useState<string>('mock-eng-sec-01');
   const [activeTestResult, setActiveTestResult] = useState<TestResult | null>(null);
   const [tutorContext, setTutorContext] = useState<StudyTutorContext | null>(null);
@@ -65,15 +70,48 @@ export default function App() {
   }, []);
 
   // Navigation handlers
-  const handleNavigate = (route: string, slug?: string) => {
+  const handleNavigate = (route: string, slugOrParams?: any) => {
+    const slug = typeof slugOrParams === 'string' ? slugOrParams : slugOrParams?.chapterSlug;
     if (slug) {
       setActiveChapterSlug(slug);
     }
+
+    if (route === 'reasoning-chapter') {
+      setActiveSubject('Reasoning');
+      setCurrentRoute('chapter-reading');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (route === 'ga-chapter' || route === 'general-awareness-chapter') {
+      setActiveSubject('General Awareness');
+      setCurrentRoute('chapter-reading');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (route === 'tier2-chapter') {
+      setActiveSubject('Tier-II');
+      setCurrentRoute('chapter-reading');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (route === 'english-chapter') {
+      setActiveSubject('English');
+      setCurrentRoute('chapter-reading');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (route === 'maths-chapter') {
+      setActiveSubject('Mathematics');
+      setCurrentRoute('chapter-reading');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     setCurrentRoute(route);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleOpenChapter = (slug: string, subject: 'English' | 'Mathematics') => {
+  const handleOpenChapter = (slug: string, subject: SubjectType = 'English') => {
     setActiveChapterSlug(slug);
     setActiveSubject(subject);
     setCurrentRoute('chapter-reading');
@@ -126,12 +164,27 @@ export default function App() {
       )}
 
       {/* Main View Router */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col pb-20 md:pb-0">
         {currentRoute === 'dashboard' && (
           <HomeView
             onNavigate={handleNavigate}
             onOpenChapter={handleOpenChapter}
             onStartMiniTest={() => handleStartMockTest('mock-daily-mini-01')}
+          />
+        )}
+
+        {currentRoute === 'reasoning' && (
+          <ReasoningView onNavigate={handleNavigate} />
+        )}
+
+        {currentRoute === 'general-awareness' && (
+          <GeneralAwarenessView onNavigate={handleNavigate} />
+        )}
+
+        {currentRoute === 'mathematics' && (
+          <MathematicsView
+            onOpenRevision={() => handleNavigate('mathematics-formulas')}
+            onOpenDrill={() => handleNavigate('practice')}
           />
         )}
 
@@ -144,18 +197,21 @@ export default function App() {
           />
         )}
 
-        {currentRoute === 'mathematics' && (
-          <MathematicsView
-            onOpenRevision={() => handleNavigate('mathematics-formulas')}
-            onOpenDrill={() => handleNavigate('practice')}
-          />
+        {currentRoute === 'tier2' && (
+          <Tier2View onNavigate={handleNavigate} />
         )}
 
         {currentRoute === 'chapter-reading' && (
           <ChapterReadingView
             slug={activeChapterSlug}
             subject={activeSubject}
-            onBack={() => handleNavigate(activeSubject.toLowerCase())}
+            onBack={() => {
+              if (activeSubject === 'Reasoning') handleNavigate('reasoning');
+              else if (activeSubject === 'General Awareness') handleNavigate('general-awareness');
+              else if (activeSubject === 'Tier-II') handleNavigate('tier2');
+              else if (activeSubject === 'Mathematics') handleNavigate('mathematics');
+              else handleNavigate('english');
+            }}
             onOpenTutorWithContext={handleOpenTutorWithContext}
           />
         )}
@@ -229,6 +285,13 @@ export default function App() {
           <LastDayRevisionView />
         )}
 
+        {(currentRoute === 'revision-all' || currentRoute === 'revision') && (
+          <AllSubjectsRevisionView
+            onNavigate={handleNavigate}
+            onOpenChapter={handleOpenChapter}
+          />
+        )}
+
         {currentRoute === 'ask-tutor' && (
           <AskTutorView
             initialContext={tutorContext}
@@ -252,14 +315,23 @@ export default function App() {
       {currentRoute !== 'ask-tutor' && currentRoute !== 'live-mock' && (
         <button
           onClick={() => handleNavigate('ask-tutor')}
-          className="fixed bottom-6 right-6 z-40 px-4 py-3 rounded-2xl bg-[#002622] hover:bg-[#003d36] text-[#19988c] border border-[#19988c]/40 shadow-xl flex items-center gap-2 cursor-pointer transition-all hover:scale-105"
+          className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-30 md:z-40 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl bg-[#002622] hover:bg-[#003d36] text-[#19988c] border border-[#19988c]/40 shadow-xl flex items-center gap-2 cursor-pointer transition-all hover:scale-105"
           title="Ask Danish's AI Study Tutor"
         >
           <span className="material-symbols-outlined text-[20px] text-[#89f5e7] animate-pulse">
             smart_toy
           </span>
-          <span className="font-bold text-[13px] text-white">Ask Tutor</span>
+          <span className="font-bold text-[12px] sm:text-[13px] text-white">Ask Tutor</span>
         </button>
+      )}
+
+      {/* Mobile Bottom Navigation */}
+      {currentRoute !== 'live-mock' && (
+        <MobileNav
+          currentRoute={currentRoute}
+          onNavigate={handleNavigate}
+          onOpenSearch={() => setIsSearchOpen(true)}
+        />
       )}
 
       {/* Footer */}

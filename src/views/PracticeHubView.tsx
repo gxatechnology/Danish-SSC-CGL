@@ -128,11 +128,11 @@ export const PracticeHubView: React.FC<PracticeHubViewProps> = ({ onOpenTutorWit
       {/* Filters */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#e5eeff] dark:border-[#1a2942] pb-4">
         <div className="flex flex-wrap items-center gap-2">
-          {['All', 'English', 'Quantitative'].map((sub) => (
+          {['All', 'Reasoning', 'General Awareness', 'Quantitative', 'English', 'Tier-II'].map((sub) => (
             <button
               key={sub}
               onClick={() => setActiveSubject(sub)}
-              className={`px-3.5 py-1.5 rounded-lg text-[13px] font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all cursor-pointer ${
                 activeSubject === sub
                   ? 'bg-[#0f2042] text-white shadow-xs'
                   : 'text-[#515f74] dark:text-[#b9c7df] hover:bg-[#eff4ff] dark:hover:bg-[#15233c]'

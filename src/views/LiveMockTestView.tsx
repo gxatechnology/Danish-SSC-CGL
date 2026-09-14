@@ -22,6 +22,7 @@ export const LiveMockTestView: React.FC<LiveMockTestViewProps> = ({
     test.sections[0].durationMinutes * 60
   );
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
+  const [isMobilePaletteOpen, setIsMobilePaletteOpen] = useState(false);
   const startTimeRef = useRef<number>(Date.now());
 
   const currentSection = test.sections[currentSectionIdx];
@@ -295,75 +296,196 @@ export const LiveMockTestView: React.FC<LiveMockTestViewProps> = ({
 
   // Active Test Screen with Sectional Timer and Palette
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 md:px-8 py-4 flex flex-col gap-4">
+    <div className="w-full max-w-[1440px] mx-auto px-3 sm:px-4 md:px-8 py-3 sm:py-4 flex flex-col gap-3 sm:gap-4">
       {/* Test Top Navigation Bar */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] shadow-xs flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="font-['Plus_Jakarta_Sans'] font-bold text-[18px] text-[#000922] dark:text-[#f8f9ff]">
+      <div className="p-3 sm:p-4 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] shadow-xs flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <span className="font-['Plus_Jakarta_Sans'] font-bold text-[15px] sm:text-[18px] text-[#000922] dark:text-[#f8f9ff]">
             {test.title}
           </span>
-          <span className="px-2.5 py-0.5 rounded-full bg-[#eff4ff] dark:bg-[#1a2942] text-[#0f2042] dark:text-[#8ea4c8] text-[12px] font-semibold font-mono">
+          <span className="px-2 sm:px-2.5 py-0.5 rounded-full bg-[#eff4ff] dark:bg-[#1a2942] text-[#0f2042] dark:text-[#8ea4c8] text-[11px] sm:text-[12px] font-semibold font-mono">
             {currentSection.sectionName}
           </span>
         </div>
 
-        {/* Sectional Timer Display */}
-        <div className="flex items-center gap-3">
+        {/* Sectional Timer & Submit Display */}
+        <div className="flex items-center gap-2 sm:gap-3">
           <div
-            className={`px-4 py-2 rounded-xl flex items-center gap-2 font-mono font-bold text-[16px] ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl flex items-center gap-1.5 sm:gap-2 font-mono font-bold text-[14px] sm:text-[16px] ${
               sectionTimeRemaining < 120
                 ? 'bg-[#fff1f2] text-[#e11d48] animate-pulse border border-[#fecdd3]'
                 : 'bg-[#000922] text-[#89f5e7] border border-[#1a2942]'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">timer</span>
+            <span className="material-symbols-outlined text-[16px] sm:text-[18px]">timer</span>
             <span>{formatTimer(sectionTimeRemaining)}</span>
           </div>
 
           <button
             onClick={() => setShowConfirmSubmit(true)}
-            className="px-4 py-2 rounded-xl bg-[#e11d48] hover:bg-[#be123c] text-white text-[13px] font-bold cursor-pointer"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-[#e11d48] hover:bg-[#be123c] text-white text-[12px] sm:text-[13px] font-bold cursor-pointer"
           >
             Submit Test
           </button>
         </div>
       </div>
 
+      {/* Mobile Question Quick Jumper & Palette Drawer Trigger */}
+      <div className="lg:hidden flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] shadow-xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 flex-1">
+          {currentSection.questions.map((q, idx) => {
+            const isCurrent = idx === currentQuestionIdx;
+            const isAns = Boolean(userAnswers[q.id]);
+            const isReview = Boolean(markedForReview[q.id]);
+
+            let chipStyle = 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+            if (isCurrent) {
+              chipStyle = 'bg-[#0f2042] text-white ring-2 ring-[#0f2042] dark:ring-[#89f5e7]';
+            } else if (isReview) {
+              chipStyle = 'bg-[#f59e0b] text-white';
+            } else if (isAns) {
+              chipStyle = 'bg-[#10b981] text-white';
+            }
+
+            return (
+              <button
+                key={q.id}
+                onClick={() => setCurrentQuestionIdx(idx)}
+                className={`w-8 h-8 rounded-lg font-mono text-[12px] font-bold shrink-0 flex items-center justify-center transition-all cursor-pointer ${chipStyle}`}
+                title={`Question ${idx + 1}`}
+              >
+                {idx + 1}
+              </button>
+            );
+          })}
+        </div>
+        <button
+          onClick={() => setIsMobilePaletteOpen(true)}
+          className="px-2.5 py-1.5 rounded-xl bg-[#eff4ff] dark:bg-[#15233c] text-[#0f2042] dark:text-[#8ea4c8] text-[11px] font-bold flex items-center gap-1 shrink-0 cursor-pointer min-h-[36px]"
+        >
+          <span className="material-symbols-outlined text-[16px]">grid_view</span>
+          <span>Palette</span>
+        </button>
+      </div>
+
+      {/* Mobile Slide-Up Question Palette Sheet */}
+      {isMobilePaletteOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex flex-col justify-end lg:hidden animate-in fade-in"
+          onClick={() => setIsMobilePaletteOpen(false)}
+        >
+          <div 
+            className="w-full bg-white dark:bg-[#0c1527] rounded-t-3xl border-t border-[#e5eeff] dark:border-[#1a2942] p-5 pb-8 shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto -mt-1" />
+            
+            <div className="flex items-center justify-between pb-2 border-b border-[#e5eeff] dark:border-[#1a2942]">
+              <div>
+                <h4 className="font-['Plus_Jakarta_Sans'] font-bold text-[16px] text-[#000922] dark:text-[#f8f9ff]">
+                  Question Palette ({currentSection.questions.length})
+                </h4>
+                <p className="text-[11px] text-[#515f74] dark:text-[#94a3b8]">
+                  Tap any number to jump directly to that question
+                </p>
+              </div>
+              <button
+                onClick={() => setIsMobilePaletteOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#eff4ff] dark:bg-[#15233c] text-[#515f74] dark:text-slate-300 flex items-center justify-center cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+
+            {/* Legend */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-medium text-[#515f74] dark:text-[#94a3b8] p-2.5 rounded-xl bg-[#f8f9ff] dark:bg-[#111c30]">
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-[#10b981]"></span>
+                <span>Answered</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-[#f59e0b]"></span>
+                <span>Marked Review</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-700"></span>
+                <span>Not Visited</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-[#0f2042]"></span>
+                <span>Current</span>
+              </div>
+            </div>
+
+            {/* Questions Grid */}
+            <div className="grid grid-cols-5 gap-2 pt-2">
+              {currentSection.questions.map((q, idx) => {
+                const isCurrent = idx === currentQuestionIdx;
+                const isAns = Boolean(userAnswers[q.id]);
+                const isReview = Boolean(markedForReview[q.id]);
+
+                let btnStyle = 'bg-[#f8f9ff] dark:bg-[#111c30] text-[#515f74] border border-[#e5eeff] dark:border-[#1a2942]';
+                if (isCurrent) {
+                  btnStyle = 'bg-[#0f2042] text-white ring-2 ring-offset-1 ring-[#0f2042]';
+                } else if (isReview) {
+                  btnStyle = 'bg-[#f59e0b] text-white';
+                } else if (isAns) {
+                  btnStyle = 'bg-[#10b981] text-white';
+                }
+
+                return (
+                  <button
+                    key={q.id}
+                    onClick={() => {
+                      setCurrentQuestionIdx(idx);
+                      setIsMobilePaletteOpen(false);
+                    }}
+                    className={`h-10 rounded-xl font-mono text-[13px] font-bold transition-all cursor-pointer ${btnStyle}`}
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Examination Viewport: Left Question Area, Right Palette */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* Left: Question View */}
         <div className="lg:col-span-8 flex flex-col gap-4">
-          <div className="p-6 md:p-8 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] shadow-xs flex flex-col gap-6">
+          <div className="p-4 sm:p-6 md:p-8 rounded-2xl bg-white dark:bg-[#0c1527] border border-[#e5eeff] dark:border-[#1a2942] shadow-xs flex flex-col gap-5 sm:gap-6">
             
             {/* Question Header */}
             <div className="flex items-center justify-between border-b border-[#e5eeff] dark:border-[#1a2942] pb-3">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded bg-[#0f2042] text-white font-mono text-[12px] font-bold">
+                <span className="px-2.5 py-0.5 rounded bg-[#0f2042] text-white font-mono text-[11px] sm:text-[12px] font-bold">
                   Q{currentQuestionIdx + 1} of {currentSection.questions.length}
                 </span>
-                <span className="text-[13px] font-bold text-[#515f74] dark:text-[#94a3b8]">
+                <span className="text-[12px] sm:text-[13px] font-bold text-[#515f74] dark:text-[#94a3b8] truncate max-w-[160px] sm:max-w-none">
                   {currentQuestion.topic}
                 </span>
               </div>
-              <span className="text-[12px] font-mono text-[#059669] font-bold">
-                +2.00 / -0.50 Marks
+              <span className="text-[11px] sm:text-[12px] font-mono text-[#059669] font-bold shrink-0">
+                +2.00 / -0.50
               </span>
             </div>
 
             {/* Question Text */}
-            <p className="font-['Plus_Jakarta_Sans'] text-[17px] md:text-[18px] font-semibold text-[#000922] dark:text-[#f8f9ff] leading-relaxed">
+            <p className="font-['Plus_Jakarta_Sans'] text-[15px] sm:text-[17px] md:text-[18px] font-semibold text-[#000922] dark:text-[#f8f9ff] leading-relaxed">
               {currentQuestion.question}
             </p>
 
             {/* Options */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2.5 sm:gap-3">
               {currentQuestion.options.map((opt) => {
                 const isSelected = userAnswers[currentQuestion.id] === opt.id;
                 return (
                   <button
                     key={opt.id}
                     onClick={() => handleSelectOption(opt.id)}
-                    className={`p-4 rounded-xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
+                    className={`p-3.5 sm:p-4 rounded-xl border text-left flex items-start gap-2.5 sm:gap-3 transition-all cursor-pointer min-h-[48px] ${
                       isSelected
                         ? 'border-[#0f2042] dark:border-[#89f5e7] bg-[#eff4ff] dark:bg-[#15233c] text-[#0f2042] dark:text-white font-semibold'
                         : 'border-[#e5eeff] dark:border-[#1a2942] bg-[#f8f9ff] dark:bg-[#111c30] text-[#0b1c30] dark:text-[#e2e8f0] hover:bg-[#eff4ff]'
@@ -372,44 +494,44 @@ export const LiveMockTestView: React.FC<LiveMockTestViewProps> = ({
                     <span className="font-mono font-bold text-[13px] shrink-0 mt-0.5">
                       ({opt.id})
                     </span>
-                    <span className="text-[15px]">{opt.text}</span>
+                    <span className="text-[14px] sm:text-[15px] leading-snug">{opt.text}</span>
                   </button>
                 );
               })}
             </div>
 
             {/* Action Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#e5eeff] dark:border-[#1a2942]">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-[#e5eeff] dark:border-[#1a2942]">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={handleClearResponse}
-                  className="px-3.5 py-2 rounded-xl border border-[#e5eeff] dark:border-[#1a2942] text-[12px] font-semibold text-[#515f74] hover:text-[#0f2042] cursor-pointer"
+                  className="px-3 py-2.5 rounded-xl border border-[#e5eeff] dark:border-[#1a2942] text-[12px] font-semibold text-[#515f74] hover:text-[#ba1a1a] cursor-pointer min-h-[44px] flex items-center justify-center"
                 >
                   Clear Response
                 </button>
                 <button
                   onClick={handleToggleMarkForReview}
-                  className={`px-3.5 py-2 rounded-xl border text-[12px] font-semibold cursor-pointer ${
+                  className={`px-3 py-2.5 rounded-xl border text-[12px] font-semibold cursor-pointer min-h-[44px] flex items-center justify-center ${
                     markedForReview[currentQuestion.id]
                       ? 'bg-[#fef3c7] border-[#f59e0b] text-[#b45309]'
                       : 'border-[#e5eeff] dark:border-[#1a2942] text-[#515f74]'
                   }`}
                 >
-                  {markedForReview[currentQuestion.id] ? 'Marked for Review' : 'Mark for Review'}
+                  {markedForReview[currentQuestion.id] ? 'Marked' : 'Mark Review'}
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   disabled={currentQuestionIdx === 0}
                   onClick={handlePrevious}
-                  className="px-4 py-2 rounded-xl border border-[#e5eeff] dark:border-[#1a2942] text-[13px] font-semibold text-[#0f2042] dark:text-[#8ea4c8] disabled:opacity-30 cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl border border-[#e5eeff] dark:border-[#1a2942] text-[13px] font-semibold text-[#0f2042] dark:text-[#8ea4c8] disabled:opacity-30 cursor-pointer min-h-[44px] flex items-center justify-center"
                 >
                   Previous
                 </button>
                 <button
                   onClick={handleSaveAndNext}
-                  className="px-6 py-2 rounded-xl bg-[#0f2042] text-white text-[13px] font-bold hover:bg-[#000922] cursor-pointer"
+                  className="px-6 py-2.5 rounded-xl bg-[#0f2042] text-white text-[13px] font-bold hover:bg-[#000922] cursor-pointer min-h-[44px] flex items-center justify-center shadow-xs"
                 >
                   Save &amp; Next
                 </button>
