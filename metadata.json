@@ -1,0 +1,6 @@
+{
+  "name": "Danish SSC CGL Study Hub",
+  "description": "SSC CGL 2026 Tier-I & Tier-II archive, syllabus tracker, chapter modules, and CBT practice engine prepared for Danish Fatma.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
